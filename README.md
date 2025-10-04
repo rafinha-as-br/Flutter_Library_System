@@ -14,44 +14,19 @@ Projeto que ajuda pessoas que amam livros a saber quais obras possuem em sua est
 ---
 
 ## ⚙️ Como executar  
- aqui vai ser tudo em docker...
+
  
-### 🔹 Backend (Go)  
+### 🔹 Docker
 ```bash
 # Clone o repositório
 git clone https://github.com/usuario/nome-do-projeto.git
 
 # Entre na pasta
-cd nome-do-projeto/backend
+cd estante/backend
 
-# Baixe as dependências
-go mod tidy
-
-# Execute a API
-go run main.go
+# Execute
+docker compose up -d
 ```
-
-### 🔹 Banco de Dados (MongoDB)  
-- Instale e inicie o MongoDB localmente  
-- Ou use uma instância na nuvem (ex: MongoDB Atlas)  
-
-### 🔹 Frontend (Flutter)  
-```bash
-# Entre na pasta do frontend
-cd nome-do-projeto/frontend
-
-# Instale as dependências
-flutter pub get
-
-# Rode o app
-flutter run
-```
-
-### 🔹 Testes (Postman)  
-- Importe a coleção de endpoints no Postman  
-- Teste os serviços da API diretamente  
-
----
 
 ## 📂 Estrutura  
 

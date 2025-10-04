@@ -1,6 +1,6 @@
 # Minha estante
 
-Projeto que ajuda pessoas que amam livros a saber quais obras possuem em sua estante, usando apenas o celular. Assim, ao fazer compras de livros em sebos, elas têm uma visão completa de sua coleção na palma da mão.
+Projeto que ajuda pessoas que amam livros a saber quais obras possuem em sua estante, usando apenas o celular. Assim, ao fazer emprestimos para seus amigos, ela vai possuir uma visão completa de sua coleção na palma da mão.
 
 ---
 

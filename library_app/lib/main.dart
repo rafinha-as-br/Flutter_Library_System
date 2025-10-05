@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/implementations/impl_book.dart';
+import 'package:library_app/implementations/impl_person.dart';
 import 'package:library_app/presentation/providers/provider_main.dart';
 import 'package:library_app/presentation/screens/screen_homepage.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+
+  BookImpl bookRepository = BookImpl();
+  PersonImpl personRepository = PersonImpl();
+
   runApp(
     MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => MainProvider())
+          ChangeNotifierProvider(create: (_) => MainProvider(
+              bookRepository, personRepository
+          )),
         ],
       child: MyApp(),
     )

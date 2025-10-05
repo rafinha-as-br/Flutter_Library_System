@@ -1,16 +1,17 @@
 
 import 'package:library_app/entities/book.dart';
+import 'package:library_app/entities/validator.dart';
 import 'package:library_app/repositories/repository_book.dart';
 
 class BookImpl implements BookRepository{
   @override
-  Future<void> insertBook(Book book) {
+  Future<Validator> insertBook(Book book) {
     // TODO: implement insertBook
     throw UnimplementedError();
   }
 
   @override
-  Future<void> removeBook(Book book) {
+  Future<Validator> removeBook(Book book) {
     // TODO: implement removeBook
     throw UnimplementedError();
   }
@@ -30,6 +31,19 @@ class BookImpl implements BookRepository{
   @override
   Future<Book> updateBook(Book book) {
     // TODO: implement updateBook
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Book>> searchBooksByTitle(String title) {
+    // TODO: implement searchBooksByTitle
+    throw UnimplementedError();
+  }
+
+
+  @override
+  Future<List<Book>> getCollectionBooks() {
+    // TODO: implement getCollectionBooks
     throw UnimplementedError();
   }
 

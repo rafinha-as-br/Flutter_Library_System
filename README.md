@@ -19,10 +19,7 @@ Projeto que ajuda pessoas que amam livros a saber quais obras possuem em sua est
 ### 🔹 Docker
 ```bash
 # Clone o repositório
-git clone https://github.com/usuario/nome-do-projeto.git
-
-# Entre na pasta
-cd estante/backend
+git clone https://github.com/rafinha-as-br/Flutter_Library_System.git
 
 # Execute
 docker compose up -d
@@ -34,7 +31,6 @@ docker compose up -d
 📦 Minha Estante
  ┣ 📂 backend        # Código em Go
  ┣ 📂 frontend       # Aplicativo Flutter
- ┣ 📂 docs           # Documentação e coleções Postman
  ┣ 📜 README.md
  ┗ 📜 .gitignore
 ```
@@ -47,3 +43,5 @@ docker compose up -d
 - [x] Integração com MongoDB  
 - [x] Frontend em Flutter  
 - [ ] Funcionalidade em desenvolvimento  
+
+Futuramente gostariamos de documentar o Postman explicando os endpoints

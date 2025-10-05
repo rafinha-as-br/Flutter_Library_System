@@ -14,16 +14,19 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func BuscarLivros(c *gin.Context) {
+func BuscarLivros(c *gin.Context) { // vai puxar quase isso por baixo dos panos : GET /livros?titulo=MongoDB
 	titulo := strings.ToLower(c.Query("titulo"))
 	autor := strings.ToLower(c.Query("autor"))
 	genero := strings.ToLower(c.Query("genero"))
 
-	collection := config.GetCollection("livros")
+	//chama a coleção de livro do MongoDB
+	collection := config.GetCollection("livro")
 
+	// se cria um filtro usando o regex
 	filter := bson.M{}
 	if titulo != "" {
 		filter["titulo"] = bson.M{"$regex": titulo, "$options": "i"}
+		//find do mongo db.livro.find(),
 	}
 	if autor != "" {
 		filter["autor"] = bson.M{"$regex": autor, "$options": "i"}

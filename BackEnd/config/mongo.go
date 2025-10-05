@@ -25,11 +25,11 @@ func ConectarMongo() {
 
 	err = client.Ping(ctx, nil)
 	if err != nil {
-		log.Fatal("❌ Erro ao conectar no MongoDB:", err)
+		log.Fatal(" Erro ao conectar no MongoDB:", err)
 	}
 
 	DB = client.Database("biblioteca")
-	fmt.Println("✅ Conectado ao MongoDB!")
+	fmt.Println(" Conectado ao MongoDB!")
 }
 
 func GetCollection(nome string) *mongo.Collection {

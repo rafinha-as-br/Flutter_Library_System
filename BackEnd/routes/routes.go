@@ -1,0 +1,11 @@
+package routes
+
+import (
+	"go-api/controllers"
+
+	"github.com/gin-gonic/gin"
+)
+
+func ConfigurarRotas(router *gin.Engine) {
+	router.GET("/livros", controllers.BuscarLivros)
+}

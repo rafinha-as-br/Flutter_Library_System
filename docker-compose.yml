@@ -1,6 +1,19 @@
 version: "3.3"
 
 services:
+  backend:
+    build: 
+      context: ./BackEnd
+      dockerfile: Dockerfile
+    container_name: go-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://estante:estante123@mongo:27017
+    restart: always
+
   mongo:
     image: mongo:6.0
     container_name: mongo

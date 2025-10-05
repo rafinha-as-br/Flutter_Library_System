@@ -14,7 +14,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func BuscarLivros(c *gin.Context) { // vai puxar quase isso por baixo dos panos : GET /livros?titulo=MongoDB
+func BuscarLivros(c *gin.Context) { // vai puxar quase isso por baixo dos panos : GET 8080/livro?titulo=MongoDB
 	titulo := strings.ToLower(c.Query("titulo"))
 	autor := strings.ToLower(c.Query("autor"))
 	genero := strings.ToLower(c.Query("genero"))

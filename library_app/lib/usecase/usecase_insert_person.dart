@@ -1,0 +1,1 @@
+/// this usecase inserts a person on the collection

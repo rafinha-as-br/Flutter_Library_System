@@ -5,6 +5,7 @@ import '../../providers/provider_main.dart';
 
 /// This tab allows the system user to view the quantity available of books by
 /// gender or author (just to show the agreggate method needed)
+/// It has a search bar in the final to directly search any book available
 class SearchCollectionTab extends StatelessWidget {
   const SearchCollectionTab({super.key});
 
@@ -14,45 +15,49 @@ class SearchCollectionTab extends StatelessWidget {
 
     return Column(
       children: [
-        Text('Pesquisando acervo'),
-        SearchAnchor.bar(
-            barHintText: 'Pesquisar',
+        Column(
+          children: [
+            Text('Pesquisar por um livro dentro do acervo'),
+            SearchAnchor.bar(
+                barHintText: 'Pesquisar',
 
-            onChanged: mainProvider.searchBooks,
+                onChanged: mainProvider.searchBooks,
 
-            suggestionsBuilder: (context, controller){
-              final results = mainProvider.suggestionsList;
+                suggestionsBuilder: (context, controller){
+                  final results = mainProvider.suggestionsList;
 
-              if (results.isEmpty && controller.text.isEmpty) {
-                return const [
-                  ListTile(
-                    title: Text('Digite algo para pesquisar'),
-                  )
-                ];
-              }
+                  if (results.isEmpty && controller.text.isEmpty) {
+                    return const [
+                      ListTile(
+                        title: Text('Digite algo para pesquisar'),
+                      )
+                    ];
+                  }
 
-              if (results.isEmpty) {
-                return const [
-                  ListTile(
-                    title: Text('Nenhum livro encontrado'),
-                  )
-                ];
-              }
+                  if (results.isEmpty) {
+                    return const [
+                      ListTile(
+                        title: Text('Nenhum livro encontrado'),
+                      )
+                    ];
+                  }
 
 
-              return results.map((book){
-                return ListTile(
-                  title: Text(book),
-                  onTap: (){
-                    controller.closeView(book);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Livro selecionado: $book'))
+                  return results.map((book){
+                    return ListTile(
+                      title: Text(book),
+                      onTap: (){
+                        controller.closeView(book);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Livro selecionado: $book'))
+                        );
+                      },
                     );
-                  },
-                );
-              });
+                  });
 
-            }
+                }
+            ),
+          ],
         )
       ],
     );

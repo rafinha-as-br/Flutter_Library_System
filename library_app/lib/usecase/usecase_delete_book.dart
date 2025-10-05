@@ -1,0 +1,1 @@
+/// this usecase deletes a book from the collection

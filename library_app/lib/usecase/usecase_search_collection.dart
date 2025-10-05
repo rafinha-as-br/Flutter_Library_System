@@ -1,0 +1,1 @@
+/// this usecase searchs all the AVAILABLE collection

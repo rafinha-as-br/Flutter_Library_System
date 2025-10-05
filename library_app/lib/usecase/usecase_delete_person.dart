@@ -1,0 +1,1 @@
+/// this usecase deletes a person from the collection

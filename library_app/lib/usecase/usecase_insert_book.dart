@@ -1,0 +1,1 @@
+/// this usecase inserts a book on the collection

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/presentation/screens/screen_edit.dart';
 import 'package:library_app/presentation/screens/screen_register.dart';
 import 'package:library_app/presentation/screens/screen_reserve.dart';
 import 'package:library_app/presentation/screens/screen_search.dart';
@@ -13,7 +12,6 @@ class HomePageScreen extends StatefulWidget {
   final List<Widget> pages = [
     SearchScreen(),
     RegisterScreen(),
-    EditScreen(),
     ReserveScreen()
   ];
 
@@ -52,11 +50,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.add),
               label: 'Cadastrar'
-          ),
-
-          BottomNavigationBarItem(
-              icon: Icon(Icons.edit),
-              label: 'Editar'
           ),
 
           BottomNavigationBarItem(

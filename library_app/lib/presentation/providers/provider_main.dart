@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 /// this provider calls all the UseCases
 class MainProvider extends ChangeNotifier{
 
+  final searchController = TextEditingController();
+
+
   final List<String> books = [
     'Livro A',
     'Livro G',
@@ -16,7 +19,13 @@ class MainProvider extends ChangeNotifier{
 
   List<String> suggestionsList = [];
 
+  void clearResults(){
+    suggestionsList = [];
+    notifyListeners();
+  }
+
   void searchBooks(String query) {
+    searchController.text = query;
     if (query.isEmpty) {
       suggestionsList = [];
     } else {

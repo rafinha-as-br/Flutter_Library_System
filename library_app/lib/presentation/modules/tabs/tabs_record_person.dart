@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class PersonTab extends StatelessWidget {
-  const PersonTab({super.key});
+
+class RecordPersonTab extends StatelessWidget {
+  const RecordPersonTab({super.key});
 
   @override
   Widget build(BuildContext context) {

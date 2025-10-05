@@ -12,7 +12,7 @@ class SearchBookTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mainProvider = Provider.of<MainProvider>(context);
-
+    final searchController = TextEditingController();
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -20,21 +20,21 @@ class SearchBookTab extends StatelessWidget {
         children: [
           SearchBar(
             hintText: 'Buscar livro',
-            controller: mainProvider.searchController,
+            controller: searchController,
             leading: const Icon(Icons.search),
             trailing: [
-              if(mainProvider.searchController.text.isNotEmpty)
+              if(searchController.text.isNotEmpty)
                 IconButton(
                   onPressed: (){
-                    mainProvider.searchController.clear();
-                    mainProvider.clearResults();
+                    searchController.clear();
+                    mainProvider.clearBookSuggestionsList();
                   },
                   icon: Icon(Icons.clear)
                 )
             ],
             onChanged: (query) => mainProvider.searchBooks(query),
           ),
-          if(mainProvider.suggestionsList.isEmpty)
+          if(mainProvider.bookSuggestionsList.isEmpty)
             Column(
               children: [
                 SizedBox(height: 110,),
@@ -51,16 +51,16 @@ class SearchBookTab extends StatelessWidget {
                 ),
               ],
             ),
-          if(mainProvider.suggestionsList.isNotEmpty)
+          if(mainProvider.bookSuggestionsList.isNotEmpty)
             ListView.builder(
               shrinkWrap: true,
-              itemCount: mainProvider.suggestionsList.length,
+              itemCount: mainProvider.bookSuggestionsList.length,
               itemBuilder: (context, index){
-                final book = mainProvider.suggestionsList[index];
+                final book = mainProvider.bookSuggestionsList[index];
                 return ListTile(
-                  title: Text(book),
+                  title: Text(book.title),
                   onTap: (){
-                    mainProvider.clearResults();
+                    mainProvider.clearBookSuggestionsList();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Selecionou: $book'))
                     );

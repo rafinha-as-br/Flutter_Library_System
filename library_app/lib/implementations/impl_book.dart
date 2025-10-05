@@ -5,6 +5,12 @@ import 'package:library_app/repositories/repository_book.dart';
 
 class BookImpl implements BookRepository{
   @override
+  Future<List<Book>> getCollectionBooks() {
+    // TODO: implement getCollectionBooks
+    throw UnimplementedError();
+  }
+
+  @override
   Future<Validator> insertBook(Book book) {
     // TODO: implement insertBook
     throw UnimplementedError();
@@ -29,22 +35,16 @@ class BookImpl implements BookRepository{
   }
 
   @override
-  Future<Book> updateBook(Book book) {
-    // TODO: implement updateBook
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<Book>> searchBooksByTitle(String title) {
     // TODO: implement searchBooksByTitle
     throw UnimplementedError();
   }
 
-
   @override
-  Future<List<Book>> getCollectionBooks() {
-    // TODO: implement getCollectionBooks
+  Future<Validator> updateBook(Book book) {
+    // TODO: implement updateBook
     throw UnimplementedError();
   }
+
 
 }

@@ -26,7 +26,7 @@ abstract class BookRepository{
   Future<Validator> removeBook(Book book);
 
   ///to update a book
-  Future<Book> updateBook(Book book);
+  Future<Validator> updateBook(Book book);
 
 
 }

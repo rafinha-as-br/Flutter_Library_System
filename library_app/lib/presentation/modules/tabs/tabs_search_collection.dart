@@ -24,7 +24,7 @@ class SearchCollectionTab extends StatelessWidget {
                 onChanged: mainProvider.searchBooks,
 
                 suggestionsBuilder: (context, controller){
-                  final results = mainProvider.suggestionsList;
+                  final results = mainProvider.bookSuggestionsList;
 
                   if (results.isEmpty && controller.text.isEmpty) {
                     return const [
@@ -45,9 +45,9 @@ class SearchCollectionTab extends StatelessWidget {
 
                   return results.map((book){
                     return ListTile(
-                      title: Text(book),
+                      title: Text(book.title),
                       onTap: (){
-                        controller.closeView(book);
+                        controller.closeView(book.title);
                         ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Livro selecionado: $book'))
                         );

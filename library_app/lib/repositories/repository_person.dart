@@ -12,7 +12,7 @@ abstract class PersonRepository{
   Future<Validator> insertPerson(Person person);
 
   /// to update an person
-  Future<Person> updatePerson(Person person);
+  Future<Validator> updatePerson(Person person);
 
   /// to remove an person
   Future<Validator> removePerson(Person person);

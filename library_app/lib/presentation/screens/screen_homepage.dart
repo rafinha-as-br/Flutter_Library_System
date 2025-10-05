@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/presentation/screens/screen_register.dart';
-import 'package:library_app/presentation/screens/screen_reserve.dart';
+import 'package:library_app/presentation/screens/screen_collection.dart';
 import 'package:library_app/presentation/screens/screen_search.dart';
 
 /// this screen is the main screen that is responsible for
@@ -12,7 +12,7 @@ class HomePageScreen extends StatefulWidget {
   final List<Widget> pages = [
     SearchScreen(),
     RegisterScreen(),
-    ReserveScreen()
+    CollectionScreen()
   ];
 
   @override
@@ -54,7 +54,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
           BottomNavigationBarItem(
               icon: Icon(Icons.book),
-              label: 'Reservar'
+              label: 'Coleção'
           ),
 
         ],

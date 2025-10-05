@@ -4,6 +4,8 @@ import 'package:library_app/entities/book.dart';
 import 'package:library_app/entities/person.dart';
 import 'package:library_app/repositories/repository_book.dart';
 import 'package:library_app/repositories/repository_person.dart';
+import 'package:library_app/usecase/usecase_delete_book.dart';
+import 'package:library_app/usecase/usecase_delete_person.dart';
 import 'package:library_app/usecase/usecase_get_collection.dart';
 import 'package:library_app/usecase/usecase_get_persons.dart';
 import 'package:library_app/usecase/usecase_insert_book.dart';
@@ -11,6 +13,8 @@ import 'package:library_app/usecase/usecase_insert_person.dart';
 import 'package:library_app/usecase/usecase_search_books.dart';
 import 'package:library_app/usecase/usecase_search_collection.dart';
 import 'package:library_app/usecase/usecase_search_person.dart';
+import 'package:library_app/usecase/usecase_update_book.dart';
+import 'package:library_app/usecase/usecase_update_person.dart';
 
 import '../../entities/validator.dart';
 
@@ -30,8 +34,10 @@ class MainProvider extends ChangeNotifier{
   /// reloaded
   List<Person> personsCollection = [];
 
-
+  /// this is the book suggestion list, used in the book searches
   List<Book> bookSuggestionsList = [];
+
+  /// this is the person suggestions list used in the person searches
   List<Person> personSuggestionsList = [];
 
   void clearBookSuggestionsList(){
@@ -81,12 +87,33 @@ class MainProvider extends ChangeNotifier{
   }
 
   /// update_book usecase
+  Future<Validator> updateBook(
+      String title, String author, String gender, int amount
+  ) async{
+    final book = Book(
+        title: title, author: author,
+        gender: gender, amount: amount
+    );
+
+    return updateBookUseCase(bookRepo, book);
+  }
+
   /// update_Person usecase
+  Future<Validator> updatePerson(String name, int age) async{
+    Person person = Person(name, age);
+    return updatePersonUseCase(personRepo, person);
+  }
 
 
   /// delete_book usecase
-  /// delete_person usecase
+  Future<Validator> deleteBook(Book book) async{
+    return deleteBookUseCase(bookRepo, book);
+  }
 
+  /// delete_person usecase
+  Future<Validator> deletePerson(Person person) async{
+    return deletePersonUseCase(personRepo, person);
+  }
 
   /// insert_book usecase
   Future<Validator> insertBook(

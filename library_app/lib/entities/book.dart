@@ -1,3 +1,4 @@
+import 'package:library_app/entities/person.dart';
 import 'package:library_app/entities/validator.dart';
 
 /// this is the book entity, contains all the params to a book
@@ -7,6 +8,7 @@ class Book {
   final String author;
   final String gender;
   final int amount;
+  List<Person> loans = [];
 
   Book({
     required this.title,

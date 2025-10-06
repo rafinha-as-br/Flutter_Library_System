@@ -4,7 +4,7 @@ Projeto que ajuda pessoas que amam livros a saber quais obras possuem em sua est
 
 ---
 
-## 🚀 Tecnologias  
+## Tecnologias  
 
 - Go (Backend)  
 - MongoDB (Banco de dados)  
@@ -21,27 +21,29 @@ Projeto que ajuda pessoas que amam livros a saber quais obras possuem em sua est
 # Clone o repositório
 git clone https://github.com/rafinha-as-br/Flutter_Library_System.git
 
-# Execute
+# Execute dentro da pasta Flutter_Library_System
 docker compose up -d
 ```
 
-## 📂 Estrutura  
+## Estrutura  
 
 ```
-📦 Minha Estante
- ┣ 📂 backend        # Código em Go
- ┣ 📂 frontend       # Aplicativo Flutter
+📦 Flutter_Library_System
+ ┣ 📂 BackEnd        # Código em Go
+ ┣ 📂 library_app    # Aplicativo Flutter
  ┣ 📜 README.md
- ┗ 📜 .gitignore
+ ┣ 📜 docker-compose.yml
+ ┣ 📜 .gitignore
+ ┗ 📜 .dockerignore
 ```
 
 ---
 
-## 📊 Funcionalidades  
+## Funcionalidades  
 
 - [x] API REST em Go  
 - [x] Integração com MongoDB  
 - [x] Frontend em Flutter  
 - [ ] Funcionalidade em desenvolvimento  
 
-Futuramente gostariamos de documentar o Postman explicando os endpoints
+Futuramente gostariamos de documentar o Postman explicando os endpoints.

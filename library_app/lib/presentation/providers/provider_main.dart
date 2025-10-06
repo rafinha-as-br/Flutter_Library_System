@@ -59,7 +59,7 @@ class MainProvider extends ChangeNotifier{
   Future<void> getCollection() async{
     final books = await getCollectionUseCase(bookRepo);
     for (var book in books) {
-      final exists = bookCollection.any((b) => b.id == book.id);
+      final exists = bookCollection.any((b) => b.title == book.title);
       if (!exists) {
         bookCollection.add(book);
       }

@@ -12,6 +12,7 @@ class SearchCollectionTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mainProvider = Provider.of<MainProvider>(context);
+    mainProvider.getCollection();
 
     return Column(
       children: [
@@ -57,6 +58,19 @@ class SearchCollectionTab extends StatelessWidget {
 
                 }
             ),
+            Text('Gêneros disponíveis'),
+            Container(
+              width: 300,
+              child: ListView.builder(
+                itemCount: mainProvider.bookCollection.length,
+                  itemBuilder: (context, index){
+                    final book = mainProvider.bookCollection[index];
+                    return ListTile(
+                      title: Text(book.title),
+                    );
+                  }
+              ),
+            )
           ],
         )
       ],

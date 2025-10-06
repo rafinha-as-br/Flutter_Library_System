@@ -63,8 +63,9 @@ class MainProvider extends ChangeNotifier{
 
 
   /// search_books usecase
-  Future<List<Book>> searchBooks(String query) async{
-    return searchBooksUseCase(bookRepo, query);
+  void searchBooks(String query) async{
+    bookSuggestionsList = await searchBooksUseCase(bookRepo, query);
+    notifyListeners();
   }
 
   /// search_collection by book title usecase

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/presentation/modules/cards/card_book.dart';
 import 'package:library_app/presentation/providers/provider_main.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,8 @@ class SearchBookTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainProvider = Provider.of<MainProvider>(context);
     final searchController = TextEditingController();
+
+    ///clear the suggestions list to every time that tab is reopened
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -57,15 +60,7 @@ class SearchBookTab extends StatelessWidget {
               itemCount: mainProvider.bookSuggestionsList.length,
               itemBuilder: (context, index){
                 final book = mainProvider.bookSuggestionsList[index];
-                return ListTile(
-                  title: Text(book.title),
-                  onTap: (){
-                    mainProvider.clearBookSuggestionsList();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Selecionou: $book'))
-                    );
-                  },
-                );
+                return BookCard(book: book);
               },
             )
         ],

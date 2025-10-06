@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/presentation/modules/cards/card_book.dart';
 import 'package:library_app/presentation/modules/cards/card_gender.dart';
 import 'package:provider/provider.dart';
 
@@ -56,14 +57,9 @@ class SearchCollectionTab extends StatelessWidget {
 
 
                     return results.map((book){
-                      return ListTile(
-                        title: Text(book.title),
-                        onTap: (){
-                          controller.closeView(book.title);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Livro selecionado: $book'))
-                          );
-                        },
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: BookCard(book: book),
                       );
                     });
 
@@ -73,35 +69,24 @@ class SearchCollectionTab extends StatelessWidget {
           ),
 
           // genders cards list field
-          Column(
-            spacing: 10,
-            children: [
-              Text(
-                'Gêneros disponíveis',
-                style: Theme.of(context).textTheme.displaySmall,
+          Expanded(
+            child: GridView.builder(
+              itemCount: gendersMap.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 12,
               ),
-              Container(
-                width: 300,
-                height: 300,
-                child: GridView.builder(
-                  itemCount: gendersMap.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 12,
-                  ),
-                  itemBuilder: (context, index){
-                      final genderName = gendersMap.keys.elementAt(index);
-                      final genderAmount = gendersMap[genderName]!;
+              itemBuilder: (context, index){
+                  final genderName = gendersMap.keys.elementAt(index);
+                  final genderAmount = gendersMap[genderName]!;
 
-                      return GenderCard(
-                          genderName: genderName,
-                          amount: genderAmount
-                      );
-                    }
-                ),
-              ),
-            ],
+                  return GenderCard(
+                      genderName: genderName,
+                      amount: genderAmount
+                  );
+                }
+            ),
           )
         ],
       ),

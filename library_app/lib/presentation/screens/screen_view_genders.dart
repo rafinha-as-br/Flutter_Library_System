@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/presentation/modules/cards/card_book.dart';
 import 'package:provider/provider.dart';
 
 import '../../entities/book.dart';
@@ -25,8 +26,7 @@ class ViewGendersScreen extends StatelessWidget {
         itemCount: books.length,
         itemBuilder: (context, index){
           final book = books[index];
-          return Card();
-
+          return BookCard(book: book,);
           }
       ),
     );

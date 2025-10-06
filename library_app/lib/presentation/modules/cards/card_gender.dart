@@ -8,32 +8,38 @@ class GenderCard extends StatelessWidget {
   final String genderName;
   final int amount;
 
-  @override
+
+
+
+@override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadiusGeometry.circular(12)
-      ),
-      color: Theme.of(context).cardColor,
-      child: InkWell(
-        onTap: (){
-
-        },
-        child: Container(
-          height: 110,
-          child: Column(
-            children: [
-              Icon(
-                Icons.menu_book_rounded,
-                size: 65,
-              ),
-              Text(genderName,),
-              Text('Disponível: $amount')
-
-            ],
+    return InkWell(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ViewGendersScreen(genderName: genderName)),
+        );
+      },
+      child: Card(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusGeometry.circular(12)
           ),
-        ),
-      )
+          color: Theme.of(context).cardColor,
+          child: Container(
+            height: 110,
+            child: Column(
+              children: [
+                Icon(
+                  Icons.menu_book_rounded,
+                  size: 65,
+                ),
+                Text(genderName,),
+                Text('Disponível: $amount')
+
+              ],
+            ),
+          )
+      ),
     );
   }
 }

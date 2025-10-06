@@ -52,9 +52,9 @@ class MainProvider extends ChangeNotifier{
 
     for (var book in bookCollection) {
       if (genresCount.containsKey(book.gender)) {
-        genresCount[book.gender] = genresCount[book.gender]! + book.amount;
+        genresCount[book.gender] = genresCount[book.gender]! + 1;
       } else {
-        genresCount[book.gender] = book.amount;
+        genresCount[book.gender] =1;
       }
     }
 
@@ -68,8 +68,9 @@ class MainProvider extends ChangeNotifier{
   }
 
   /// search_collection by book title usecase
-  List<Book> searchByTitleOnCollection(String query) {
-    return searchCollectionByBookTitleUseCase(bookCollection, query);
+  void searchByTitleOnCollection(String query) {
+    bookSuggestionsList = searchCollectionByBookTitleUseCase(bookCollection, query);
+    notifyListeners();
   }
   
   /// search_collection by book gender usecase

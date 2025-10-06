@@ -7,5 +7,5 @@ import (
 )
 
 func ConfigurarRotas(router *gin.Engine) {
-	router.GET("/livros", controllers.BuscarLivros)
+	router.GET("/livro", controllers.BuscarLivros)
 }

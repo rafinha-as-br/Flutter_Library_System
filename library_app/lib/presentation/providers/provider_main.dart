@@ -40,19 +40,41 @@ class MainProvider extends ChangeNotifier{
   /// this is the person suggestions list used in the person searches
   List<Person> personSuggestionsList = [];
 
+  /// to clear the book suggestions list
   void clearBookSuggestionsList(){
     bookSuggestionsList = [];
     notifyListeners();
   }
+
+  /// this function delivers a map of genders available in the collection
+  Map<String, int> getGendersMap() {
+    final Map<String, int> genresCount = {};
+
+    for (var book in bookCollection) {
+      if (genresCount.containsKey(book.gender)) {
+        genresCount[book.gender] = genresCount[book.gender]! + book.amount;
+      } else {
+        genresCount[book.gender] = book.amount;
+      }
+    }
+
+    return genresCount;
+  }
+
 
   /// search_books usecase
   Future<List<Book>> searchBooks(String query) async{
     return searchBooksUseCase(bookRepo, query);
   }
 
-  /// search_collection usecase
-  List<Book> searchCollection(String query) {
-    return searchCollectionUseCase(bookCollection, query);
+  /// search_collection by book title usecase
+  List<Book> searchByTitleOnCollection(String query) {
+    return searchCollectionByBookTitleUseCase(bookCollection, query);
+  }
+  
+  /// search_collection by book gender usecase
+  List<Book> searchByGenderOnCollection(String query){
+    return searchCollectionByGenderUseCase(bookCollection, query);
   }
 
   /// get_collection usecase and updates the list

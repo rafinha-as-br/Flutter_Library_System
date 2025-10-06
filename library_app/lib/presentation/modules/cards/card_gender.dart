@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/presentation/screens/screen_view_genders.dart';
 
 /// this card is to show the genders available in the collection and the amount
 /// of books
@@ -10,11 +11,29 @@ class GenderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        children: [
-
-        ],
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.circular(12)
       ),
+      color: Theme.of(context).cardColor,
+      child: InkWell(
+        onTap: (){
+
+        },
+        child: Container(
+          height: 110,
+          child: Column(
+            children: [
+              Icon(
+                Icons.menu_book_rounded,
+                size: 65,
+              ),
+              Text(genderName,),
+              Text('Disponível: $amount')
+
+            ],
+          ),
+        ),
+      )
     );
   }
 }

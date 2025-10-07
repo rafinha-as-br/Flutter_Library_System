@@ -11,3 +11,8 @@ type Livro struct {
 	Exemplares  int                `bson:"exemplares" json:"exemplares"`
 	Emprestimos []string           `bson:"emprestimos" json:"emprestimos"`
 }
+
+type GeneroStats struct {
+	Genero      string `bson:"_id" json:"genero"`
+	TotalLivros int    `bson:"totalLivros" json:"totalLivros"`
+}

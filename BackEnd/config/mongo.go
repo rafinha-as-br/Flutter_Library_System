@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,7 +14,13 @@ import (
 var DB *mongo.Database
 
 func ConectarMongo() {
-	clientOptions := options.Client().ApplyURI("mongodb://estante:estante123@localhost:27017")
+	uri := os.Getenv("MONGO_URI")
+
+	if uri == "" {
+		log.Fatal("Variável de ambiente MONGO_URI não definida")
+	}
+
+	clientOptions := options.Client().ApplyURI(uri)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

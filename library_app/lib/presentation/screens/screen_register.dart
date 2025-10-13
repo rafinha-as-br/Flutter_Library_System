@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/presentation/modules/tabs/tabs_record_book.dart';
-import 'package:library_app/presentation/modules/tabs/tabs_record_person.dart';
 
-/// Register screen that allows the system user to register a new book or user
+/// Register screen that allows the system user to register a new book
+/// ** In the future there will be more features from this page
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
@@ -22,11 +22,6 @@ class RegisterScreen extends StatelessWidget {
                   text: 'Registrar livro',
                 ),
 
-                /// person registration tab
-                Tab(
-                  icon: Icon(Icons.person),
-                  text: 'Registrar pessoa',
-                )
               ]
               ),
 
@@ -35,7 +30,6 @@ class RegisterScreen extends StatelessWidget {
               child: TabBarView(
                 children: [
                   RecordBookTab(),
-                  RecordPersonTab()
 
                 ]
               )

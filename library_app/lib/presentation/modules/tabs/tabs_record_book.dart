@@ -5,6 +5,14 @@ class RecordBookTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final TextEditingController bookTitle = TextEditingController();
+    final TextEditingController bookAuthor = TextEditingController();
+    final TextEditingController bookGender = TextEditingController();
+    final TextEditingController bookYear = TextEditingController();
+
+
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: ListView(
@@ -31,6 +39,7 @@ class RecordBookTab extends StatelessWidget {
                 ),
               ),
               TextField(
+                controller: bookTitle,
                 decoration: InputDecoration(
                     labelText: 'Título',
                     border: OutlineInputBorder()
@@ -50,6 +59,7 @@ class RecordBookTab extends StatelessWidget {
                 ),
               ),
               TextField(
+                controller: bookAuthor,
                 decoration: InputDecoration(
                     labelText: 'Autor',
                     border: OutlineInputBorder()
@@ -70,6 +80,7 @@ class RecordBookTab extends StatelessWidget {
                 ),
               ),
               TextField(
+                controller: bookGender,
                 decoration: InputDecoration(
                     labelText: 'Gênero',
                     border: OutlineInputBorder()
@@ -89,6 +100,7 @@ class RecordBookTab extends StatelessWidget {
                 ),
               ),
               TextField(
+                controller: bookYear,
                 decoration: InputDecoration(
                     labelText: 'Ano',
                     border: OutlineInputBorder()

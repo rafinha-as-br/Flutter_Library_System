@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/entities/book.dart';
 import 'package:library_app/presentation/modules/cards/card_book.dart';
 import 'package:library_app/presentation/providers/provider_main.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 /// it can be or not available in the collection
 class SearchBookTab extends StatelessWidget {
   const SearchBookTab({super.key});
+
 
 
   @override
@@ -60,7 +62,7 @@ class SearchBookTab extends StatelessWidget {
               itemCount: mainProvider.bookSuggestionsList.length,
               itemBuilder: (context, index){
                 final book = mainProvider.bookSuggestionsList[index];
-                return BookCard(book: book);
+                return BookCard(book: book, onTap: (){});
               },
             )
         ],

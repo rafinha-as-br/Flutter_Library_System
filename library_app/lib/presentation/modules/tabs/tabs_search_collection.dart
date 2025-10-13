@@ -59,7 +59,7 @@ class SearchCollectionTab extends StatelessWidget {
                     return results.map((book){
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: BookCard(book: book),
+                        child: BookCard(book: book, onTap: (){},),
                       );
                     });
 

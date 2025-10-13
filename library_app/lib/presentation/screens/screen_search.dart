@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/presentation/modules/tabs/tabs_search_books.dart';
 import 'package:library_app/presentation/modules/tabs/tabs_search_collection.dart';
-import 'package:library_app/presentation/modules/tabs/tabs_search_person.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/provider_main.dart';
@@ -37,10 +36,6 @@ class SearchScreen extends StatelessWidget {
                     text: 'Acervo',
                   ),
 
-                  Tab(
-                    icon: Icon(Icons.person_search),
-                    text: 'Usuários',
-                  )
 
                 ]
               ),
@@ -50,7 +45,6 @@ class SearchScreen extends StatelessWidget {
                   children: [
                     SearchBookTab(),
                     SearchCollectionTab(),
-                    SearchPersonTab()
                   ]
                 )
               )

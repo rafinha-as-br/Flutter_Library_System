@@ -26,7 +26,7 @@ class ViewGendersScreen extends StatelessWidget {
         itemCount: books.length,
         itemBuilder: (context, index){
           final book = books[index];
-          return BookCard(book: book,);
+          return BookCard(book: book, onTap: (){},);
           }
       ),
     );

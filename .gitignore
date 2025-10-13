@@ -1,0 +1,62 @@
+
+# Go (BackEnd)
+*.exe
+*.exe~
+*.out
+*.test
+*.prof
+
+# Diretórios gerados pelo Go
+/bin/
+/pkg/
+/vendor/
+
+# Dependências
+go.sum
+
+# Logs e ambiente
+*.log
+.env
+
+# Docker
+# Arquivos locais e volumes
+docker-compose.override.yml
+mongo_data/
+data/
+tmp/
+*.pid
+
+# VSCode / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Flutter (FrontEnd)
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/pubspec.lock
+**/.android/
+**/.ios/
+**/.fvm/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Arquivos do Android Studio / Xcode
+*.iml
+*.ipr
+*.iws
+.gradle/
+.local.properties
+.metadata
+*.keystore
+*.jks
+
+# Sistema / Cache
+.DS_Store
+Thumbs.db
+.cache/
+*.tmp

@@ -60,6 +60,9 @@ func BuscarLivrosDisponiveis(c *gin.Context) {
 	collection := config.GetCollection("livro")
 
 	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: bson.D{
+			{Key: "emprestados", Value: bson.D{{Key: "$size", Value: 0}}},
+		}}},
 		{{Key: "$group", Value: bson.D{
 			{Key: "_id", Value: "$genero"},
 			{Key: "totalLivros", Value: bson.D{{Key: "$sum", Value: 1}}},

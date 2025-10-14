@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -53,4 +54,36 @@ func BuscarLivros(c *gin.Context) { // vai puxar quase isso por baixo dos panos 
 	}
 
 	c.JSON(http.StatusOK, livros)
+}
+
+func BuscarLivrosDisponiveis(c *gin.Context) {
+	collection := config.GetCollection("livro")
+
+	pipeline := mongo.Pipeline{
+		{{Key: "$group", Value: bson.D{
+			{Key: "_id", Value: "$genero"},
+			{Key: "totalLivros", Value: bson.D{{Key: "$sum", Value: 1}}},
+		}}},
+		{{Key: "$sort", Value: bson.D{{Key: "totalLivros", Value: -1}}}},
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	cursor, err := collection.Aggregate(ctx, pipeline)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer cursor.Close(ctx)
+
+	var GeneroStats []models.GeneroStats
+
+	if err = cursor.All(ctx, &GeneroStats); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, GeneroStats)
 }

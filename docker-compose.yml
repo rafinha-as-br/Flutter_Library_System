@@ -4,7 +4,7 @@ services:
   backend:
     build: 
       context: ./BackEnd
-      dockerfile: Dockerfile
+      dockerfile: ./BackEnd/Dockerfile
     container_name: go-api
     ports:
       - "8000:8000"

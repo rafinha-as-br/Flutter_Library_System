@@ -16,19 +16,37 @@ class ViewGendersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainProvider = Provider.of<MainProvider>(context);
 
-    final List<Book> books = mainProvider.searchByGenderOnCollection(genderName);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(genderName, style: Theme.of(context).textTheme.displaySmall,),
-      ),
-      body: ListView.builder(
-        itemCount: books.length,
-        itemBuilder: (context, index){
-          final book = books[index];
-          return BookCard(book: book, onTap: (){},);
+    return FutureBuilder(
+        future: mainProvider.searchByGenderOnCollection(genderName),
+        builder: (context, snapshot){
+          List<Book> books = [];
+
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return const Center(child: CircularProgressIndicator(),);
           }
-      ),
+
+          if(snapshot.hasData){
+            books = snapshot.data!;
+          }
+
+          if(snapshot.hasError){
+            return Center(child: Text('Error'),);
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(genderName, style: Theme.of(context).textTheme.displaySmall,),
+            ),
+            body: ListView.builder(
+                itemCount: books.length,
+                itemBuilder: (context, index){
+                  final book = books[index];
+                  return BookCard(book: book, onTap: (){},);
+                }
+            ),
+          );
+        }
     );
   }
 }

@@ -21,12 +21,14 @@ class BookCard extends StatelessWidget {
                 Icons.book,
                 size: 100,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(book.title, style: Theme.of(context).textTheme.displaySmall,),
-                  Text('${book.author} - ${book.gender}')
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(book.title, style: Theme.of(context).textTheme.bodyLarge,),
+                    Text('${book.author} - ${book.gender}')
+                  ],
+                ),
               )
             ],
           ),

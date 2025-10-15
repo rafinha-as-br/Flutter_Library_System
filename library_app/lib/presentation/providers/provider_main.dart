@@ -26,6 +26,9 @@ class MainProvider extends ChangeNotifier{
   final BookRepository bookRepo;
   final PersonRepository personRepo;
 
+  final searchController = TextEditingController();
+
+
   /// this is the person list, everytime there is an update this list is
   /// reloaded
   List<Person> personsCollection = [];

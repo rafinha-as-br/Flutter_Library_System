@@ -4,20 +4,34 @@ import 'package:library_app/presentation/modules/cards/card_book.dart';
 import 'package:library_app/presentation/providers/provider_main.dart';
 import 'package:provider/provider.dart';
 
-/// this tab allow the system user to search by title, gender and author
-/// any books that exists in  the database,
-/// it can be or not available in the collection
-class SearchBookTab extends StatelessWidget {
+class SearchBookTab extends StatefulWidget {
   const SearchBookTab({super.key});
 
+  @override
+  State<SearchBookTab> createState() => _SearchBookTabState();
+}
 
+class _SearchBookTabState extends State<SearchBookTab> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Limpa as sugestões apenas quando o widget é inicializado
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<MainProvider>(context, listen: false).clearBookSuggestionsList();
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final mainProvider = Provider.of<MainProvider>(context);
-    final searchController = TextEditingController();
-
-    ///clear the suggestions list to every time that tab is reopened
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -25,46 +39,54 @@ class SearchBookTab extends StatelessWidget {
         children: [
           SearchBar(
             hintText: 'Buscar livro',
-            controller: searchController,
+            controller: _searchController,
             leading: const Icon(Icons.search),
             trailing: [
-              if(searchController.text.isNotEmpty)
+              if (_searchController.text.isNotEmpty)
                 IconButton(
-                  onPressed: (){
-                    searchController.clear();
+                  onPressed: () {
+                    _searchController.clear();
                     mainProvider.clearBookSuggestionsList();
                   },
-                  icon: Icon(Icons.clear)
+                  icon: const Icon(Icons.clear),
                 )
             ],
             onChanged: (query) => mainProvider.searchBooks(query),
           ),
-          if(mainProvider.bookSuggestionsList.isEmpty)
+          if (mainProvider.bookSuggestionsList.isEmpty || _searchController.text.isEmpty)
             Column(
               children: [
-                SizedBox(height: 110,),
-                Icon(
+                const SizedBox(height: 110),
+                const Icon(
                   Icons.menu_book_outlined,
                   size: 120,
                 ),
-                SizedBox(height: 15,),
+                const SizedBox(height: 15),
                 Text(
                   'Busque um livro por título, autor ou gênero!',
                   style: TextStyle(
-                      fontSize: 16
+                    fontSize: 16,
+                    color: Colors.grey[600],
                   ),
                 ),
               ],
             ),
-          if(mainProvider.bookSuggestionsList.isNotEmpty)
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: mainProvider.bookSuggestionsList.length,
-              itemBuilder: (context, index){
-                final book = mainProvider.bookSuggestionsList[index];
-                return BookCard(book: book, onTap: (){});
-              },
-            )
+          if (mainProvider.bookSuggestionsList.isEmpty && _searchController.text.isNotEmpty)
+            const Padding(
+              padding: EdgeInsets.only(top: 50),
+              child: Text('Nenhum livro encontrado'),
+            ),
+          if (mainProvider.bookSuggestionsList.isNotEmpty && _searchController.text.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: mainProvider.bookSuggestionsList.length,
+                itemBuilder: (context, index) {
+                  final book = mainProvider.bookSuggestionsList[index];
+                  return BookCard(book: book, onTap: () {});
+                },
+              ),
+            ),
         ],
       ),
     );

@@ -15,9 +15,6 @@ class SearchCollectionTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainProvider = Provider.of<MainProvider>(context);
 
-    /// to update the collection to the most recent
-    final Map<String, int> gendersMap = mainProvider.getGendersMap();
-
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
@@ -67,24 +64,44 @@ class SearchCollectionTab extends StatelessWidget {
           ),
 
           // genders cards list field
-          Expanded(
-            child: GridView.builder(
-              itemCount: gendersMap.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 5,
-                mainAxisSpacing: 12,
-              ),
-              itemBuilder: (context, index){
-                  final genderName = gendersMap.keys.elementAt(index);
-                  final genderAmount = gendersMap[genderName]!;
+          FutureBuilder(
+              future: mainProvider.getGendersMap(),
+              builder: (context, snapshot){
+                var gendersMap = {};
 
-                  return GenderCard(
-                      genderName: genderName,
-                      amount: genderAmount
-                  );
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return const Center(child: CircularProgressIndicator(),);
                 }
-            ),
+
+                if(snapshot.hasError){
+                  return Center(child: Text('Erro'),);
+                }
+
+                if(snapshot.hasData){
+                  gendersMap = snapshot.data!;
+                }
+
+                return Expanded(
+                  child: GridView.builder(
+                      itemCount: gendersMap.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 5,
+                        mainAxisSpacing: 12,
+                      ),
+                      itemBuilder: (context, index){
+                        final genderName = gendersMap.keys.elementAt(index);
+                        final genderAmount = gendersMap[genderName]!;
+
+                        return GenderCard(
+                            genderName: genderName,
+                            amount: genderAmount
+                        );
+                      }
+                  ),
+                );
+
+              }
           )
         ],
       ),

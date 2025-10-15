@@ -9,19 +9,22 @@ Future<List<Book>> searchBooksUseCase(
     ) async
 {
 
-  if(query.trim().isEmpty) return [];
 
   final titleResults = await bookRepo.searchBooksByTitle(query);
   final authorResults = await bookRepo.searchBooksByAuthor(query);
+
   final genderResults = await bookRepo.searchBooksByGender(query);
+
 
   /// combine results and remove duplicates
   final combined = [...titleResults, ...authorResults, ...genderResults];
-  final finalList = <dynamic, Book>{};
+  final List<Book>finalList = [];
+
   for (var book in combined) {
-    finalList.putIfAbsent(book.id, () => book);
+    if(!finalList.contains(book)) finalList.add(book);
   }
 
-  return finalList.values.toList();
+
+  return finalList;
 }
 

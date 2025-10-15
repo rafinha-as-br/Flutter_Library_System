@@ -12,7 +12,7 @@ class BookImplTesting implements BookRepository {
   ];
 
   @override
-  Future<List<Book>> getCollectionBooks() async {
+  Future<List<Book>> getGendersAvailable() async {
     await Future.delayed(const Duration(milliseconds: 300)); // simula latência
     return _books;
   }

@@ -20,7 +20,7 @@ abstract class BookRepository{
   Future<List<Book>> searchBooksByTitle(String title);
 
   /// to get all books available on the collection
-  Future<List<dynamic>> getCollectionBooks();
+  Future<List<dynamic>> getGendersAvailable();
 
   ///to add a new book
   Future<Validator> insertBook(Book book);

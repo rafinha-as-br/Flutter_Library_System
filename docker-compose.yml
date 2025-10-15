@@ -25,7 +25,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: estante123
     volumes:
       - mongo_data:/data/db
-      - ./backend/mongo-init:/docker-entrypoint-initdb.d
+      - ./BackEnd/mongo-init:/docker-entrypoint-initdb.d
 
 volumes:
   mongo_data:

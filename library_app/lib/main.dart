@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 void main() {
 
   BookImpl bookRepository = BookImpl();
-  BookImplTesting bookImplTesting = BookImplTesting();
   PersonImpl personRepository = PersonImpl();
   PersonImplTesting personImplTesting = PersonImplTesting();
 
@@ -19,7 +18,7 @@ void main() {
     MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => MainProvider(
-              bookImplTesting, personImplTesting
+              bookRepository, personImplTesting
           )),
         ],
       child: MyApp(),

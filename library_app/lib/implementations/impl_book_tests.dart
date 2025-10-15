@@ -68,4 +68,10 @@ class BookImplTesting implements BookRepository {
         .where((b) => b.gender.toLowerCase().contains(gender.toLowerCase()))
         .toList();
   }
+
+  @override
+  Future<List<Book>> searchAllBooks() {
+    // TODO: implement searchAllBooks
+    throw UnimplementedError();
+  }
 }

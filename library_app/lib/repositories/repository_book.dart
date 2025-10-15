@@ -7,6 +7,9 @@ import '../entities/validator.dart';
 
 abstract class BookRepository{
 
+  /// to search all books in the collection
+  Future<List<Book>> searchAllBooks();
+
   ///to search books by author
   Future<List<Book>> searchBooksByAuthor(String author);
 
@@ -17,7 +20,7 @@ abstract class BookRepository{
   Future<List<Book>> searchBooksByTitle(String title);
 
   /// to get all books available on the collection
-  Future<List<Book>> getCollectionBooks();
+  Future<List<dynamic>> getCollectionBooks();
 
   ///to add a new book
   Future<Validator> insertBook(Book book);

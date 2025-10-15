@@ -6,7 +6,7 @@ import 'package:library_app/repositories/repository_book.dart';
 import 'package:library_app/repositories/repository_person.dart';
 import 'package:library_app/usecase/usecase_delete_book.dart';
 import 'package:library_app/usecase/usecase_delete_person.dart';
-import 'package:library_app/usecase/usecase_get_collection.dart';
+import 'package:library_app/usecase/usecase_get_available_genders.dart';
 import 'package:library_app/usecase/usecase_get_persons.dart';
 import 'package:library_app/usecase/usecase_insert_book.dart';
 import 'package:library_app/usecase/usecase_insert_person.dart';
@@ -26,10 +26,6 @@ class MainProvider extends ChangeNotifier{
   final BookRepository bookRepo;
   final PersonRepository personRepo;
 
-  /// this is the collection list, everytime there is an update this list is
-  /// reloaded
-  List<Book> bookCollection = [];
-
   /// this is the person list, everytime there is an update this list is
   /// reloaded
   List<Person> personsCollection = [];
@@ -46,19 +42,9 @@ class MainProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  /// this function delivers a map of genders available in the collection
-  Map<String, int> getGendersMap() {
-    final Map<String, int> genresCount = {};
-
-    for (var book in bookCollection) {
-      if (genresCount.containsKey(book.gender)) {
-        genresCount[book.gender] = genresCount[book.gender]! + 1;
-      } else {
-        genresCount[book.gender] =1;
-      }
-    }
-
-    return genresCount;
+  /// this function delivers a map of available gender in the collection
+  Future <Map<String, int>> getGendersMap() async{
+    return await getGendersAvailables(bookRepo);
   }
 
 
@@ -69,28 +55,16 @@ class MainProvider extends ChangeNotifier{
   }
 
   /// search_collection by book title usecase
-  void searchByTitleOnCollection(String query) {
-    bookSuggestionsList = searchCollectionByBookTitleUseCase(bookCollection, query);
+  Future<void> searchByTitleOnCollection(String query) async {
+    bookSuggestionsList = await searchCollectionByBookTitleUseCase(bookRepo, query);
     notifyListeners();
   }
   
   /// search_collection by book gender usecase
-  List<Book> searchByGenderOnCollection(String query){
-    return searchCollectionByGenderUseCase(bookCollection, query);
+  Future<List<Book>> searchByGenderOnCollection(String query) async{
+    return await searchCollectionByGenderUseCase(bookRepo, query);
   }
 
-  /// get_collection usecase and updates the list
-  Future<void> getCollection() async{
-    final books = await getCollectionUseCase(bookRepo);
-    for (var book in books) {
-      final exists = bookCollection.any((b) => b.title == book.title);
-      if (!exists) {
-        bookCollection.add(book);
-      }
-    }
-
-    notifyListeners();
-  }
 
   /// search_person usecase
   Future<List<Person>> searchPerson(String query) async{

@@ -16,8 +16,6 @@ class SearchCollectionTab extends StatelessWidget {
     final mainProvider = Provider.of<MainProvider>(context);
 
     /// to update the collection to the most recent
-    mainProvider.getCollection();
-
     final Map<String, int> gendersMap = mainProvider.getGendersMap();
 
 

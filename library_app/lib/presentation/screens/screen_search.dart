@@ -18,7 +18,7 @@ class SearchScreen extends StatelessWidget {
     /// reloading the collection
 
     return DefaultTabController(
-        length: 3,
+        length: 2,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           child: Column(

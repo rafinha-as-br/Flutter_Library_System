@@ -8,7 +8,7 @@ class Book {
   final String author;
   final String gender;
   final int amount;
-  List<Person> loans = [];
+  List<String> loans = [];
 
   Book({
     required this.title,
@@ -25,13 +25,19 @@ class Book {
     return Validator(true, null);
   }
 
+  /// Creates a Book object from JSON
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
-      title: json["titulo"] ?? "",
-      author: json["autor"] ?? "",
-      gender: json["genero"] ?? "",
-      amount: json["quantidade"] ?? 0,
-    ).. id = json["_id"] ?? "";
-
+      title: json['titulo'] ?? '',
+      author: json['autor'] ?? '',
+      gender: json['genero'] ?? '',
+      amount: json['exemplares'] ?? 0,
+    )
+      ..id = json['_id'] ?? ''
+      ..loans = (json['emprestimos'] as List<dynamic>?)
+          ?.map((loan) => loan.toString())
+          .toList() ??
+          [];
   }
+
 }

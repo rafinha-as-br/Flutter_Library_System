@@ -4,14 +4,14 @@ services:
   backend:
     build: 
       context: ./BackEnd
-      dockerfile: ./BackEnd/Dockerfile
+      dockerfile: Dockerfile
     container_name: go-api
     ports:
       - "8000:8000"
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/?authSource=admin
+      - MONGO_URI=mongodb://estante:estante123@mongo:27017/?authSource=admin
     restart: always
 
   mongo:

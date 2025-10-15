@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -89,4 +90,33 @@ func BuscarLivrosDisponiveis(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, GeneroStats)
+}
+
+func InserirLivro(c *gin.Context) {
+	collection := config.GetCollection("livro")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var novoLivro models.Livro
+
+	if err := c.ShouldBindJSON(&novoLivro); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"erro": err.Error()})
+	}
+
+	if novoLivro.Emprestimos == nil {
+		novoLivro.Emprestimos = []string{}
+	}
+
+	result, err := collection.InsertOne(ctx, novoLivro)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao inserir livro", "details": err.Error()})
+		return
+	}
+
+	if oid, ok := result.InsertedID.(primitive.ObjectID); ok {
+		novoLivro.ID = oid
+	}
+
+	c.JSON(http.StatusCreated, novoLivro)
 }

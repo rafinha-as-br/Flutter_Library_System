@@ -11,4 +11,5 @@ func ConfigurarRotas(router *gin.Engine) {
 	router.GET("/livro/disponiveis", controllers.BuscarLivrosDisponiveis)
 	router.POST("/livro", controllers.InserirLivro)
 	router.PUT("/livro/:id", controllers.AtualizaLivro)
+	router.DELETE("/livro/:id", controllers.DeletarLivro)
 }

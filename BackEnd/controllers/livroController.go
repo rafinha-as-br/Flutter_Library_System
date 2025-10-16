@@ -138,7 +138,6 @@ func AtualizaLivro(c *gin.Context) {
 	var dadosAtualizacao models.Livro
 
 	if err := c.ShouldBindJSON(&dadosAtualizacao); err != nil {
-		// Trata erros de JSON malformado (ex: tipo de dado errado)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Erro a atualizar livro", "details": err.Error()})
 		return
 	}
@@ -150,8 +149,6 @@ func AtualizaLivro(c *gin.Context) {
 			"ano":        dadosAtualizacao.Ano,
 			"genero":     dadosAtualizacao.Genero,
 			"exemplares": dadosAtualizacao.Exemplares,
-			// NOTA: Emprestimos geralmente não é atualizado via PUT/livro,
-			// mas sim em um endpoint separado (ex: POST /livro/:id/emprestimo)
 		},
 	}
 
@@ -182,4 +179,34 @@ func AtualizaLivro(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, livroAtualizado)
+}
+
+func DeletarLivro(c *gin.Context) {
+	colletion := config.GetCollection("livro")
+
+	idParam := c.Param("id")
+
+	objID, err := primitive.ObjectIDFromHex(idParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID de livro inválido."})
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	filter := bson.M{"_id": objID}
+
+	result, err := colletion.DeleteOne(ctx, filter)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Falha ao deletar livro no MongoDB", "details": err.Error()})
+		return
+	}
+
+	if result.DeletedCount == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"message": "Livro não encontrado."})
+		return
+	}
+
+	c.JSON(http.StatusNoContent, nil)
 }

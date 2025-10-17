@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/entities/book.dart';
+import 'package:library_app/presentation/modules/dialogs/dialog_alert.dart';
+import 'package:library_app/presentation/modules/dialogs/dialog_error.dart';
+import 'package:library_app/presentation/modules/dialogs/dialog_sucess.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/provider_main.dart';
@@ -49,7 +52,8 @@ class BookCardA extends StatelessWidget {
                   /// edit book button
                   IconButton(
                       onPressed: (){
-                        mainProvider.setEditableBook(book);
+
+                        mainProvider.setBookForEdit(book);
 
                       },
                       icon: Icon(
@@ -64,25 +68,27 @@ class BookCardA extends StatelessWidget {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Erro!'),
-                              content: Text('Desja mesmo excluir o livro? Essa ação é irreversível!'),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('Cancelar'),
-                                  onPressed: () {
+
+
+                            return CustomAlertDialog(
+                                onContinue: () async{
+                                  final status = await mainProvider.deleteBook(book);
+                                  if(status.status && context.mounted){
                                     Navigator.of(context).pop();
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text('Continuar'),
-                                  onPressed: () {
-                                    mainProvider.deleteBook(book);
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
+                                    showDialog(context: context, builder: (context){
+                                      return SucessDialog(sucessMessage: "Sucesso ao deletar o livro!");
+                                    });
+                                    mainProvider.togglePage(0);
+                                  } else{
+
+                                    return showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return ErrorDialog(message: status.msg!);
+                                        }
+                                    );
+                                  }
+                            });
                           },
                         );
                       },
@@ -103,6 +109,8 @@ class BookCardA extends StatelessWidget {
     );
   }
 }
+
+/// this card shows a book without edit and delete buttons, but still has onTap action
 class BookCardB extends StatelessWidget {
   const BookCardB({
     super.key,
@@ -141,6 +149,46 @@ class BookCardB extends StatelessWidget {
 
             ],
           ),
+        )
+      ),
+    );
+  }
+}
+
+/// This card shows a book without any action
+class BookCardC extends StatelessWidget {
+  const BookCardC({
+    super.key,
+    required this.book,
+
+  });
+  final Book book;
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        child: Row(
+          spacing: 2,
+          children: [
+            Icon(
+              Icons.book,
+              size: 100,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(book.title, style: Theme.of(context).textTheme.bodyLarge,),
+                  Text('${book.author} - ${book.gender}')
+                ],
+              ),
+            ),
+
+          ],
         )
       ),
     );

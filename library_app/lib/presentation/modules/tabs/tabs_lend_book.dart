@@ -21,7 +21,7 @@ class LendBookTab extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
       child: Column(
-        spacing: 15,
+        spacing: 20,
         children: [
 
           Text(
@@ -30,11 +30,10 @@ class LendBookTab extends StatelessWidget {
           ),
 
           // get the book
-          BottomSuggestionSearchFieldB(),
+          Expanded(child: BottomSuggestionSearchFieldB()),
 
 
 
-          // get the person
         ],
       ),
     );

@@ -6,8 +6,10 @@ import 'package:library_app/usecase/usecase_delete_book.dart';
 import 'package:library_app/usecase/usecase_get_available_genders.dart';
 import 'package:library_app/usecase/usecase_insert_book.dart';
 import 'package:library_app/usecase/usecase_lend_book.dart';
+import 'package:library_app/usecase/usecase_return_lend.dart';
 import 'package:library_app/usecase/usecase_search_books.dart';
 import 'package:library_app/usecase/usecase_search_collection.dart';
+import 'package:library_app/usecase/usecase_search_lends.dart';
 import 'package:library_app/usecase/usecase_update_book.dart';
 
 import '../../entities/validator.dart';
@@ -34,12 +36,17 @@ class MainProvider extends ChangeNotifier{
   Book? editableBook;
 
   /// this methods is used for editing a book in BookFormScreen
-  void setEditableBook(Book book){
+  void setBookForEdit(Book book){
     editableBook = book;
 
     // to go to the BookFormScreen
     homePageIndex = 1;
 
+    notifyListeners();
+  }
+
+  void setBookForLend(Book book) {
+    editableBook = book;
     notifyListeners();
   }
 
@@ -67,6 +74,18 @@ class MainProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  /// search_lends usecase
+  Future<List<Book>> searchLends() async{
+    return await searchLendsUseCase(bookRepo);
+  }
+
+  /// return_lend usecase
+  Future<Validator> returnLend(String personName) async{
+    print("****************** BOOK ID EDITABLE: ${editableBook!.id}");
+    return returnLendUseCase(bookRepo, editableBook!, personName);
+  }
+
+
   /// search_collection by book title usecase
   Future<void> searchByTitleOnCollection(String query) async {
     bookSuggestionsList = await searchCollectionByBookTitleUseCase(bookRepo, query);
@@ -83,8 +102,6 @@ class MainProvider extends ChangeNotifier{
     print('BookID: ${editableBook!.id}');
     return await lendBookUseCase(bookRepo, editableBook!, personName);
   }
-
-
 
 
   /// update_book usecase

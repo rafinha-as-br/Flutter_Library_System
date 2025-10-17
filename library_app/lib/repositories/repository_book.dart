@@ -23,7 +23,7 @@ abstract class BookRepository{
   Future<List<dynamic>> getGendersAvailable();
 
   /// to get all books that have a lend
-  Future<List<dynamic>> getLendings();
+  Future<List<Book>> getLendings();
 
   ///to add a new book
   Future<Validator> insertBook(Book book);

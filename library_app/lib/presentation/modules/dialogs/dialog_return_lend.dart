@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:library_app/entities/book.dart';
-import 'package:library_app/entities/validator.dart';
-import 'package:library_app/presentation/modules/cards/card_book.dart';
-import 'package:library_app/presentation/modules/dialogs/dialog_error.dart';
-import 'package:library_app/presentation/modules/dialogs/dialog_models.dart';
-import 'package:library_app/presentation/modules/dialogs/dialog_sucess.dart';
 
-// function that receives a controller to be passed to the function
+import '../../../entities/validator.dart';
+import '../cards/card_book.dart';
+import 'dialog_error.dart';
+import 'dialog_models.dart';
+import 'dialog_sucess.dart';
+
 typedef LendDialogCallBack = Future<Validator> Function(String personName);
 
-/// this dialog is called to do a lend, calling the
-class LendDialog extends StatelessWidget {
-  const LendDialog({
-    super.key, required this.confirmAction, required this.cancelAction,
+/// this dialog is called to return a lend from a specific book
+class ReturnLendDialog extends StatelessWidget {
+  const ReturnLendDialog({
+    super.key,
+    required this.confirmAction,
+    required this.cancelAction,
     required this.book
   });
 
@@ -27,7 +29,7 @@ class LendDialog extends StatelessWidget {
     return DialogModel1(
         header: [
           Icon(Icons.call_to_action_outlined, size: 35,),
-          Text('Fazendo um empréstimo', style: Theme.of(context).textTheme.titleLarge,),
+          Text('Devolvendo empréstimo', style: Theme.of(context).textTheme.titleLarge,),
         ],
         body: Column(
           children: [
@@ -44,12 +46,12 @@ class LendDialog extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 15,
               children: [
-                Text('Nome da pessoa:', style: Theme.of(context).textTheme.titleMedium,),
+                Text('Nome da pessoa para devolver:', style: Theme.of(context).textTheme.titleMedium,),
                 TextField(
                   controller: controller,
                   decoration: InputDecoration(
-                    hint: Text('Nome'),
-                    border: OutlineInputBorder()
+                      hint: Text('Nome'),
+                      border: OutlineInputBorder()
                   ),
                 ),
               ],
@@ -79,7 +81,7 @@ class LendDialog extends StatelessWidget {
                       context: context,
                       builder: (context){
                         return SucessDialog(sucessMessage: lendBook.msg!);
-                  });
+                      });
                 }
 
               },

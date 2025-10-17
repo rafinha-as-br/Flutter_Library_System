@@ -28,26 +28,42 @@ class DialogModel1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Column(
-        children: [
 
-          //header
-          Row(
-            children: header
-          ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
 
+            //header
+            Flexible(
+              child: Row(
+                spacing: 12,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: header
+              ),
+            ),
+            Divider(),
 
-          // body
-          body,
+            // body
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 25),
+              child: body,
+            ),
 
-          // footer
-          Row(
-            children: footer.map((button) {
-              return Expanded(child: button);
-            }).toList()
-          )
+            // footer
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 7),
+              child: Row(
+                spacing: 10,
+                children: footer.map((button) {
+                  return Expanded(child: button);
+                }).toList()
+              ),
+            )
 
-        ],
+          ],
+        ),
       ),
     );
   }

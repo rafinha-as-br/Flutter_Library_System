@@ -71,6 +71,7 @@ class BottomSuggestionSearchFieldB extends StatelessWidget {
     final mainProvider = Provider.of<MainProvider>(context);
 
     return Column(
+      spacing: 20,
       children: [
         SearchBar(
           hintText: 'Buscar livro',
@@ -88,8 +89,10 @@ class BottomSuggestionSearchFieldB extends StatelessWidget {
           ],
           onChanged: (query) => mainProvider.searchBooks(query),
         ),
-        if(mainProvider.bookSuggestionsList.isEmpty)
-          Column(
+
+        Expanded(
+          child: mainProvider.bookSuggestionsList.isEmpty ?
+            Column(
             children: [
               SizedBox(height: 110,),
               Icon(
@@ -104,9 +107,9 @@ class BottomSuggestionSearchFieldB extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        if(mainProvider.bookSuggestionsList.isNotEmpty)
-          ListView.builder(
+          )
+              :
+            ListView.builder(
             shrinkWrap: true,
             itemCount: mainProvider.bookSuggestionsList.length,
             itemBuilder: (context, index){
@@ -128,6 +131,8 @@ class BottomSuggestionSearchFieldB extends StatelessWidget {
               },);
             },
           )
+        )
+
       ],
     );
   }

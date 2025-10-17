@@ -1,43 +1,53 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:library_app/entities/book.dart';
-import 'package:library_app/entities/person.dart';
 import 'package:library_app/repositories/repository_book.dart';
-import 'package:library_app/repositories/repository_person.dart';
 import 'package:library_app/usecase/usecase_delete_book.dart';
-import 'package:library_app/usecase/usecase_delete_person.dart';
 import 'package:library_app/usecase/usecase_get_available_genders.dart';
-import 'package:library_app/usecase/usecase_get_persons.dart';
 import 'package:library_app/usecase/usecase_insert_book.dart';
-import 'package:library_app/usecase/usecase_insert_person.dart';
+import 'package:library_app/usecase/usecase_lend_book.dart';
 import 'package:library_app/usecase/usecase_search_books.dart';
 import 'package:library_app/usecase/usecase_search_collection.dart';
-import 'package:library_app/usecase/usecase_search_person.dart';
 import 'package:library_app/usecase/usecase_update_book.dart';
-import 'package:library_app/usecase/usecase_update_person.dart';
 
 import '../../entities/validator.dart';
 
 /// this provider calls all the UseCases
 class MainProvider extends ChangeNotifier{
-  MainProvider(this.bookRepo, this.personRepo);
+  MainProvider(this.bookRepo);
 
   /// repositories needed to be passed to the usecases
   final BookRepository bookRepo;
-  final PersonRepository personRepo;
 
+  // this is the variable that controls the homepage tab index
+  int homePageIndex = 0;
+
+  /// toggle page method (used in bottomNavBar)
+  void togglePage(int index){
+    homePageIndex = index;
+    editableBook = null;
+    bookSuggestionsList = [];
+    notifyListeners();
+  }
+
+  /// this is the variable that contains a book to be edited
+  Book? editableBook;
+
+  /// this methods is used for editing a book in BookFormScreen
+  void setEditableBook(Book book){
+    editableBook = book;
+
+    // to go to the BookFormScreen
+    homePageIndex = 1;
+
+    notifyListeners();
+  }
+
+  // this is the search controller used for controlling the search
   final searchController = TextEditingController();
-
-
-  /// this is the person list, everytime there is an update this list is
-  /// reloaded
-  List<Person> personsCollection = [];
 
   /// this is the book suggestion list, used in the book searches
   List<Book> bookSuggestionsList = [];
-
-  /// this is the person suggestions list used in the person searches
-  List<Person> personSuggestionsList = [];
 
   /// to clear the book suggestions list
   void clearBookSuggestionsList(){
@@ -68,41 +78,29 @@ class MainProvider extends ChangeNotifier{
     return await searchCollectionByGenderUseCase(bookRepo, query);
   }
 
-
-  /// search_person usecase
-  Future<List<Person>> searchPerson(String query) async{
-    return searchPersonUseCase(personsCollection, query);
+  /// lendBook -> Adds a string and
+  Future<Validator> lendBook(String personName) async{
+    print('BookID: ${editableBook!.id}');
+    return await lendBookUseCase(bookRepo, editableBook!, personName);
   }
 
-  /// get_persons usecase and updates the list
-  Future<void> getPersons() async{
-    final personsList = await getPersonsUseCase(personRepo);
-    for(var person in personsList){
-      final exists = personsList.any((b)=> b.name == person.name);
-      if(!exists){
-        personsCollection.add(person);
-      }
-    }
 
-    notifyListeners();
-  }
+
 
   /// update_book usecase
   Future<Validator> updateBook(
-      String title, String author, String gender, int amount
+      String? bookId, String title, String author, String gender, String year, String amount
   ) async{
     final book = Book(
-        title: title, author: author,
-        gender: gender, amount: amount
-    );
+        title: title,
+        author: author,
+        gender: gender,
+        year: int.tryParse(year) ?? 0,
+        amount: int.tryParse(amount) ?? 0
+    )..id = bookId;
 
+    editableBook = null;
     return updateBookUseCase(bookRepo, book);
-  }
-
-  /// update_Person usecase
-  Future<Validator> updatePerson(String name, int age) async{
-    Person person = Person(name, age);
-    return updatePersonUseCase(personRepo, person);
   }
 
 
@@ -111,30 +109,23 @@ class MainProvider extends ChangeNotifier{
     return deleteBookUseCase(bookRepo, book);
   }
 
-  /// delete_person usecase
-  Future<Validator> deletePerson(Person person) async{
-    return deletePersonUseCase(personRepo, person);
-  }
 
   /// insert_book usecase
   Future<Validator> insertBook(
-    String title, String author, String gender, int amount
+    String title, String author, String gender, String year, String amount
     ) async{
 
     // creating a book entity to pass to the usecase
     Book book = Book(
       title: title,
       author: author,
+      year: int.tryParse(year)?? -1,
       gender: gender,
-      amount: amount
+      amount: int.tryParse(amount) ?? -1
     );
 
     return insertBookUseCase(bookRepo, book);
   }
-  /// insert_person usecase
-  Future<Validator> insertPerson(String name, int age) async{
-    Person person = Person(name, age);
-    return insertPersonUseCase(personRepo, person);
-  }
+
 
 }

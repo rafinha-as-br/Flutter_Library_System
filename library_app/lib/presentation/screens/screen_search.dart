@@ -15,6 +15,8 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mainProvider = Provider.of<MainProvider>(context);
 
+
+
     /// reloading the collection
 
     return DefaultTabController(

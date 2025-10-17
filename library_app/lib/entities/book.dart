@@ -1,4 +1,3 @@
-import 'package:library_app/entities/person.dart';
 import 'package:library_app/entities/validator.dart';
 
 /// this is the book entity, contains all the params to a book
@@ -7,13 +6,15 @@ class Book {
   final String title;
   final String author;
   final String gender;
-  final int amount;
+  final int year;
+  int amount;
   List<String> loans = [];
 
   Book({
     required this.title,
     required this.author,
     required this.gender,
+    required this.year,
     required this.amount,
   });
 
@@ -30,10 +31,11 @@ class Book {
     return Book(
       title: json['titulo'] ?? '',
       author: json['autor'] ?? '',
+      year: json['ano'] ?? 0,
       gender: json['genero'] ?? '',
       amount: json['exemplares'] ?? 0,
     )
-      ..id = json['_id'] ?? ''
+      ..id = json['id'] ?? ''
       ..loans = (json['emprestimos'] as List<dynamic>?)
           ?.map((loan) => loan.toString())
           .toList() ??

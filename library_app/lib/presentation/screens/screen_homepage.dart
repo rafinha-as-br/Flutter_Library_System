@@ -1,45 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/presentation/screens/screen_register.dart';
+import 'package:library_app/presentation/screens/screen_book_form.dart';
 import 'package:library_app/presentation/screens/screen_collection.dart';
 import 'package:library_app/presentation/screens/screen_search.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/provider_main.dart';
 
 /// this screen is the main screen that is responsible for
 /// going to any of the 3 main screens
-class HomePageScreen extends StatefulWidget {
-  HomePageScreen({super.key});
-
-  /// list of screens
-  final List<Widget> pages = [
-    SearchScreen(),
-    RegisterScreen(),
-    CollectionScreen()
-  ];
-
-  @override
-  State<HomePageScreen> createState() => _HomePageScreenState();
-}
-
-class _HomePageScreenState extends State<HomePageScreen> {
-  /// index of pages
-  int selectedIndex = 0;
-
-  /// toggle function
-  void togglePage(int index){
-    setState(() {
-      selectedIndex = index;
-    });
-  }
+class HomePageScreen extends StatelessWidget {
+  const HomePageScreen({super.key});
 
 
 
 
   @override
   Widget build(BuildContext context) {
+
+    final mainProvider = Provider.of<MainProvider>(context);
+
+    /// list of screens
+    final List<Widget> pages = [
+      SearchScreen(),
+      BookFormScreen(book: mainProvider.editableBook),
+      CollectionScreen()
+    ];
+
+
     return Scaffold(
-      body: widget.pages[selectedIndex],
+      body: pages[mainProvider.homePageIndex],
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
-        onTap: togglePage,
+        currentIndex: mainProvider.homePageIndex,
+        onTap: mainProvider.togglePage,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
@@ -62,3 +54,4 @@ class _HomePageScreenState extends State<HomePageScreen> {
     );
   }
 }
+

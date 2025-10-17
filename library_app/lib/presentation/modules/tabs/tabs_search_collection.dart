@@ -54,7 +54,7 @@ class SearchCollectionTab extends StatelessWidget {
                     return results.map((book){
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: BookCard(book: book, onTap: (){},),
+                        child: BookCardA(book: book, onTap: (){},),
                       );
                     });
 
@@ -74,6 +74,7 @@ class SearchCollectionTab extends StatelessWidget {
                 }
 
                 if(snapshot.hasError){
+                  print(snapshot.error);
                   return Center(child: Text('Erro'),);
                 }
 

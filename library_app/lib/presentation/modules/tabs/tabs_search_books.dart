@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 class SearchBookTab extends StatefulWidget {
   const SearchBookTab({super.key});
 
+
   @override
   State<SearchBookTab> createState() => _SearchBookTabState();
 }
@@ -17,7 +18,6 @@ class _SearchBookTabState extends State<SearchBookTab> {
   @override
   void initState() {
     super.initState();
-    // Limpa as sugestões apenas quando o widget é inicializado
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<MainProvider>(context, listen: false).clearBookSuggestionsList();
     });
@@ -83,7 +83,7 @@ class _SearchBookTabState extends State<SearchBookTab> {
                 itemCount: mainProvider.bookSuggestionsList.length,
                 itemBuilder: (context, index) {
                   final book = mainProvider.bookSuggestionsList[index];
-                  return BookCard(book: book, onTap: () {});
+                  return BookCardA(book: book, onTap: () {});
                 },
               ),
             ),

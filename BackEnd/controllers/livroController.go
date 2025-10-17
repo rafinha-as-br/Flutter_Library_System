@@ -216,14 +216,11 @@ func BuscarLivrosEmprestados(c *gin.Context) {
 	autor := strings.ToLower(c.Query("autor"))
 	genero := strings.ToLower(c.Query("genero"))
 
-	//chama a coleção de livro do MongoDB
 	collection := config.GetCollection("livro")
 
-	// se cria um filtro usando o regex
-	filter := bson.M{"emprestados": bson.M{"$ne": []string{}}}
+	filter := bson.M{"emprestados": bson.M{"$not": bson.M{"$size": 0}}}
 	if titulo != "" {
 		filter["titulo"] = bson.M{"$regex": titulo, "$options": "i"}
-		//find do mongo db.livro.find(),
 	}
 	if autor != "" {
 		filter["autor"] = bson.M{"$regex": autor, "$options": "i"}

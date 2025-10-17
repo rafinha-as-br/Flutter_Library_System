@@ -22,6 +22,9 @@ abstract class BookRepository{
   /// to get all books available on the collection
   Future<List<dynamic>> getGendersAvailable();
 
+  /// to get all books that have a lend
+  Future<List<dynamic>> getLendings();
+
   ///to add a new book
   Future<Validator> insertBook(Book book);
 
@@ -31,5 +34,10 @@ abstract class BookRepository{
   ///to update a book
   Future<Validator> updateBook(Book book);
 
+  ///to do a lend
+  Future<Validator> lendBook(Book book, String personName);
+
+  ///to return a book
+  Future<Validator> returnLend(Book book, String personName);
 
 }

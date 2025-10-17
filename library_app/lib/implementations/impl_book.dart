@@ -40,7 +40,6 @@ class BookImpl implements BookRepository{
     return [];
   }
 
-
   @override
   Future<Validator> insertBook(Book book) async{
 
@@ -86,9 +85,15 @@ class BookImpl implements BookRepository{
   }
 
   @override
-  Future<Validator> removeBook(Book book) {
-    // TODO: implement removeBook
-    throw UnimplementedError();
+  Future<Validator> removeBook(Book book) async{
+    try {
+      final url = Uri.parse('http://10.0.2.2:8000/${book.id}');
+      await http.delete(url);
+    } on Exception catch (e) {
+      return Validator(false, e.toString());
+    }
+
+    return Validator(true, null);
   }
 
   @override
@@ -168,7 +173,6 @@ class BookImpl implements BookRepository{
             'autor' : book.author,
             'genero' : book.gender,
             'exemplares' : book.amount,
-            'emprestimos' : book.loans
           })
       );
 
@@ -194,6 +198,93 @@ class BookImpl implements BookRepository{
       return Validator(false, 'Erro de conexão ou requisição: ${e.toString()}');
     }
   }
+
+  @override
+  Future<List<dynamic>> getLendings() async{
+    final url = Uri.parse('http://10.0.2.2:8000/livro/emprestados');
+    final response = await http.get(url);
+
+    final List<dynamic> json;
+    if (response.statusCode == 200) {
+      return json = jsonDecode(response.body);
+    }
+
+    return [];
+  }
+
+  @override
+  Future<Validator> lendBook(Book book, String personName) async{
+    try {
+      final url = Uri.parse('http://10.0.2.2:8000/livro/emprestimo/${book.id}');
+      final response = await http.put(
+          url,
+          headers: <String, String> {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, dynamic>{
+            "nome_amiguinho" : personName
+          })
+      );
+
+      if (response.statusCode == 200) {
+        return Validator(true, null);
+
+      } else {
+
+        final Map<String, dynamic> errorBody = jsonDecode(response.body);
+
+        String errorMessage = 'Erro desconhecido. Status Code: ${response.statusCode}';
+
+        if (errorBody.containsKey('erro')) {
+          errorMessage = errorBody['erro'];
+        } else if (errorBody.containsKey('error')) {
+          errorMessage = errorBody['error'];
+        }
+
+        return Validator(false, errorMessage);
+      }
+    } on Exception catch (e) {
+      return Validator(false, e.toString());
+    }
+
+  }
+
+  @override
+  Future<Validator> returnLend(Book book, String personName) async{
+    try {
+      final url = Uri.parse('http://10.0.2.2:8000/livro/emprestimo/${book.id}');
+      final response = await http.patch(
+          url,
+          headers: <String, String> {
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, dynamic>{
+            "nome_amiguinho" : personName
+          })
+      );
+
+      if (response.statusCode == 200) {
+        return Validator(true, null);
+
+      } else {
+
+        final Map<String, dynamic> errorBody = jsonDecode(response.body);
+
+        String errorMessage = 'Erro desconhecido. Status Code: ${response.statusCode}';
+
+        if (errorBody.containsKey('erro')) {
+          errorMessage = errorBody['erro'];
+        } else if (errorBody.containsKey('error')) {
+          errorMessage = errorBody['error'];
+        }
+
+        return Validator(false, errorMessage);
+      }
+    } on Exception catch (e) {
+      return Validator(false, e.toString());
+    }
+  }
+
 
 
 }

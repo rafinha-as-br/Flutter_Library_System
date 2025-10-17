@@ -210,3 +210,136 @@ func DeletarLivro(c *gin.Context) {
 
 	c.JSON(http.StatusNoContent, nil)
 }
+
+func BuscarLivrosEmprestados(c *gin.Context) {
+	titulo := strings.ToLower(c.Query("titulo"))
+	autor := strings.ToLower(c.Query("autor"))
+	genero := strings.ToLower(c.Query("genero"))
+
+	//chama a coleção de livro do MongoDB
+	collection := config.GetCollection("livro")
+
+	// se cria um filtro usando o regex
+	filter := bson.M{"emprestados": bson.M{"$ne": []string{}}}
+	if titulo != "" {
+		filter["titulo"] = bson.M{"$regex": titulo, "$options": "i"}
+		//find do mongo db.livro.find(),
+	}
+	if autor != "" {
+		filter["autor"] = bson.M{"$regex": autor, "$options": "i"}
+	}
+	if genero != "" {
+		filter["genero"] = bson.M{"$regex": genero, "$options": "i"}
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	opts := options.Find().SetSort(bson.D{{Key: "titulo", Value: 1}})
+
+	cursor, err := collection.Find(ctx, filter, opts)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	var livros []models.Livro
+	if err = cursor.All(ctx, &livros); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, livros)
+}
+
+func AtualizaEmprestimo(c *gin.Context) {
+	collection := config.GetCollection("livro")
+	idParam := c.Param("id")
+
+	objID, err := primitive.ObjectIDFromHex(idParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID de livro inválido."})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var emprestimo models.EmprestimoRequest
+
+	if err := c.ShouldBindJSON(&emprestimo); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "O campo 'nome_amiguinho' é obrigatório."})
+		return
+	}
+
+	update := bson.M{
+		"$push": bson.M{"emprestados": emprestimo.Nome},
+	}
+
+	filter := bson.M{"_id": objID}
+
+	result, err := collection.UpdateOne(ctx, filter, update)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Falha ao registrar empréstimo no MongoDB", "details": err.Error()})
+		return
+	}
+
+	if result.ModifiedCount == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Livro não encontrado para emprestar."})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Livro emprestado com sucesso.",
+		"cliente": emprestimo.Nome,
+	})
+}
+
+func Devolver(c *gin.Context) {
+	collection := config.GetCollection("livro")
+	idParam := c.Param("id")
+
+	objID, err := primitive.ObjectIDFromHex(idParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID de livro inválido."})
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var emprestimoData models.EmprestimoRequest
+
+	if err := c.ShouldBindJSON(&emprestimoData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "O campo 'nome_cliente' é obrigatório para a devolução."})
+		return
+	}
+
+	update := bson.M{
+		"$pull": bson.M{"emprestados": emprestimoData.Nome},
+	}
+
+	filter := bson.M{"_id": objID}
+
+	result, err := collection.UpdateOne(ctx, filter, update)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError,
+			gin.H{
+				"error":   "Falha ao registrar devolução no MongoDB",
+				"details": err.Error(),
+			})
+		return
+	}
+
+	if result.ModifiedCount == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Livro não encontrado ou cliente já havia devolvido o livro."})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Livro devolvido com sucesso.",
+		"cliente": emprestimoData.Nome,
+	})
+}

@@ -16,3 +16,7 @@ type GeneroStats struct {
 	Genero      string `bson:"_id" json:"genero"`
 	TotalLivros int    `bson:"totalLivros" json:"totalLivros"`
 }
+
+type EmprestimoRequest struct {
+	Nome string `json:"nome_amiguinho" binding:"required"`
+}
